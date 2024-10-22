@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCANet: Correcting LEGO Assembly Errors with Self-Correct Assembly Network  </title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://SCANet-IROS2024.github.io">
+            SCANet
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SCANet: Correcting LEGO Assembly Errors with Self-Correct Assembly Network</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://palm.seu.edu.cn/homepage/wanyuxuan/demo/index.html">Yuxuan Wan *</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.cs.ox.ac.uk/people/kaichen.zhou">Kaichen Zhou *</a><sup>2</sup>,</span>
+            <span class="author-block">
+              Jinhong Chen<sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://zsdonghao.github.io/">Hao Dong</a><sup>2</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>*</sup>Equal Contribute,</span>
+            <span class="author-block"><sup>1</sup>Southeast University</span>
+            <span class="author-block"><sup>2</sup>Peking University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2403.18195"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Yaser-wyx/SCANet"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/kaichen-z/SCANet-Data"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Motivation</h2>
+        <video id="teaser" autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/error.mp4"
+                  type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          <span class="dnerf"> As the assembly progresses, errors accumulate more and more!
+        </h2>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Autonomous assembly in robotics and 3D vision presents significant challenges, 
+            particularly in ensuring assembly correctness. Presently, 
+            predominant methods such as MEPNet focus on assembling components based on manually provided images.
+          </p>
+          <p>
+            However, these approaches often fall short in achieving satisfactory results for tasks requiring long-term planning.
+            Concurrently, we observe that integrating a self correction module can partially alleviate such issues. 
+            Motivated by this concern, we introduce the single-step assembly error correction task, 
+            which involves identifying and rectifying misassembled components.
+          </p>
+          <p>
+            To support research in this area,
+            we present the LEGO Error Correction Assembly Dataset
+            (LEGO-ECA), comprising manual images for assembly steps
+            and instances of assembly failures. Additionally, we propose
+            the Self-Correct Assembly Network (SCANet), a novel method
+            to address this task. SCANet treats assembled components
+            as queries, determining their correctness in manual images
+            and providing corrections when necessary. Finally, we utilize
+            SCANet to correct the assembly results of MEPNet. Experimental results demonstrate that SCANet can identify and correct
+            MEPNet’s misassembled results, significantly improving the
+            correctness of assembly.
+          </p>
+        </div>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Task definition. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Task Definition</h2>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture1.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture2.png"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <h3 style="text-align:left">
+            Framing as a Markov process:
+          </h3>
+          <p style="text-indent:1em;">
+            <strong>Reduced Complexity:</strong> By only considering the last step, the model becomes more efficient.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Most Relevant Information:</strong> More distant steps typically contribute less useful information.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Scalability:</strong> Prevent model becoming overwhelmed by a long sequence of past steps.
+          </p>
+        </div>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ Task definition. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- methodology. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Methodology</h2>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Core Idea:</strong> Treat components as queries to check whether they are correct or not.
+          </p>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture3.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <h3 style="text-align:left">
+            Self-Correct Assembly Network (SCANet):
+          </h3>
+          <p style="text-indent:1em;">
+            <strong>Neural Network Backbone:</strong> extract differences.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Correction Module:</strong> check and correct the error.
+          </p>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture6.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <h3 style="text-align:left">
+            Convolutional Neural Network Backbone:
+          </h3>
+          <p style="text-indent:1em;">
+            <strong>Two Input Branches:</strong> manual-Shape branch and Assembly-Shape branch.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Difference Extractor:</strong> compares feature differences between the two input branches.
+          </p>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture4.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <h3 style="text-align:left">
+            Assembly Correction Module (Core Module):
+          </h3>
+          <p style="text-indent:1em;">
+            <strong>Component Pose Encoder:</strong> Encodes the assembled components.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Transformer Network:</strong> Queries components, analyzing assembly correctness from feature differences.
+          </p>
+          <p style="text-indent:1em;">
+            <strong>Component Pose Corrector:</strong> Identifies errors and adjusts component poses.
+          </p>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture5.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ methodology. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- dataset. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">LEGO-ECA Dataset</h2>
+        <div class="content has-text-justified">
+          <p>
+            It comprises <strong>1,429 LEGO assembly manuals</strong>.
+          </p>
+          <p>
+            Dataset containing <strong>approximately 120,000 instances</strong> of incorrectly assembled examples.
+          </p>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture7.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture8.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ dataset. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- experiment. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Experiment</h2>
+        <div class="content has-text-justified">
+          <div class="column is-centered has-text-centered">
+            <img src="./static/images/picture9.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ experiment. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- comparison. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Comparison</h2>
+        <video id="teaser" autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/comparison.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <hr align="center" width="100%" size="1000" color="#696969">
+    <!--/ comparison. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{wan2024SCANet
+      author    = {Yuxuan Wan, Kaichen Zhou, Jinhong Chen ,Hao Dong},
+      title     = {SCANet: Correcting LEGO Assembly Errors with Self-Correct Assembly Network},
+      journal   = {IROS},
+      year      = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://arxiv.org/abs/2403.18195">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
